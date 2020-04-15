@@ -1,0 +1,20 @@
+{
+  "name": "english-for-kids",
+  "version": "1.0.0",
+  "description": "english-words-for-kids",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "webpack-dev-server"
+  },
+  "keywords": [
+    "english"
+  ],
+  "author": "Kseniya Tulikova",
+  "license": "ISC",
+  "devDependencies": {
+    "webpack": "^4.42.1",
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.10.3"
+  }
+}

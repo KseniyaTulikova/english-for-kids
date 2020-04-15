@@ -1,0 +1,65 @@
+body {
+  margin: 0;
+  overflow-x: hidden;
+
+  font-family: Roboto;
+
+  background-repeat: no-repeat;
+  background-position: center 180px;
+}
+
+.games-board {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 1440px;
+  margin: auto;
+  padding: 20px 15px;
+  /* padding-top: 55px; */
+}
+
+.game-theme {
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  height: 280px;
+  margin: 20px 25px;
+
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 36px;
+  font-family: Roboto;
+  text-align: center;
+  color: #212529;
+  text-decoration: none;
+
+  background: -webkit-gradient(linear,left top,left bottom,from(#fd6a63),color-stop(40%,#feb46b),color-stop(40%,#ffffff),to(#ffffff));
+  background: linear-gradient(180deg,#fd6a63,#feb46b 40%,#ffffff 0,#ffffff);
+  background-color: brown;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
+  cursor: pointer;
+
+  -webkit-transition: 0.3s;
+          transition: 0.3s;
+}
+
+.game-theme.green {
+  background: -webkit-gradient(linear,left top,left bottom,from(#0099ae),color-stop(40%,#00bf82),color-stop(40%,#ffffff),to(#ffffff));
+  background: linear-gradient(180deg,#0099ae,#00bf82 40%,#ffffff 0,#ffffff);
+}
+
+.game-theme img {
+  width: 140px;
+  height: 140px;
+  margin: 30px auto;
+
+  border: 10px solid #ffffff;
+  border-radius: 50%;
+
+  object-fit: cover;
+}
+
+.game-theme:hover {
+  box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+}
