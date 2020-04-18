@@ -1,32 +1,67 @@
 import { Game } from './Game.js';
 import { Component } from './Component.js';
+import { GameHeader } from './GameHeader.js';
+
 
 export class GameBoard extends Component {
-    constructor(gameThemes) {
-        let games = gameThemes.map(theme => new Game(theme));
-        super({games: games});
+    constructor(listOfGames) {
+        let games = listOfGames.map(game => new Game(game));
+        super({
+            games: games,
+            selectedGame: null,  
+        });
+    }
+
+    toggleMode() {
+        this.state.games.forEach(game => game.toggleMode()); 
+    }
+
+    showHomePage() {
+        this.state.selectedGame.setSelected(false);
+        this.setState({...this.state, selectedGame: null});
+    }
+
+    selectGame(gameTheme) {
+        let selectedGame = this.state.games.find(game => game.getGameTheme() == gameTheme);
+        selectedGame.setSelected(true);
+
+        this.setState({ ...this.state, selectedGame: selectedGame });
+    }
+
+    getGameThemes() {
+       return this.state.games.map(game => game.getGameTheme());
     }
 
     render() {
         let gameBoard = document.createElement('div');
-        gameBoard.className = 'games-board';
-        // console.log(this.state.themes);
-        // this.state.games = [];
-        // this.state.themes.forEach(theme => {
-        //     let game = new Game(theme);
-        //     this.state.games.push(game);
-        //     gameBoard.append(game.htmlElement);
-        // });
-        this.state.games.forEach(game => gameBoard.append(game.htmlElement));
+
+        if(this.state.selectedGame != null) {
+            gameBoard.append(this.state.selectedGame.htmlElement);
+        } else {
+            gameBoard.classList.add('container'); 
+            this.state.games.forEach((game, index) => {
+                game.htmlElement.dataset.gameIndex = index;
+                gameBoard.append(game.htmlElement);
+            });
+        }
+         
 
         return gameBoard;
     }
 
+    setListeners() {
+        if(this.state.selectedGame == null) {
+            this.rootElement.addEventListener('click', (event) => {
+                let game = event.target.closest('.game-theme');
+                if (game != null) {
+                    let gameIndex = game.dataset.gameIndex;
+                    let selectedGame = this.state.games[gameIndex];
+                    selectedGame.setSelected(true);
 
-
-    // reverse() {
-    //     this.setState({...this.state, isReversed: true});
-    // }
-
+                    this.setState({ ...this.state, selectedGame: selectedGame });
+                }
+            });    
+        }
+    }
 }
 

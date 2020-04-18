@@ -1,12 +1,17 @@
 import { GameBoard } from './GameBoard.js';
-import { GAME_THEMES } from './gameThemes.js';
+import { GAMES } from './games.js';
+import { GameHeader } from './GameHeader.js';
 
 
 window.onload = () => {
- let game = new GameBoard(GAME_THEMES);
- game.htmlElement.addEventListener('click', () => {change(game)});
 
- document.body.append(game.htmlElement);
+ let gameBoard = new GameBoard(GAMES);
+ let gameHeader = new GameHeader(gameBoard);
+ 
+//  game.htmlElement.addEventListener('click', () => {change(game)});
+
+ document.body.append(gameHeader.htmlElement, gameBoard.htmlElement);
+
 
  
 }

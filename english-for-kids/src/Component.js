@@ -1,8 +1,9 @@
 export class Component {
     constructor(state) {
-        this.state = state;
-
-        this.rootElement = this.render();
+        this.state = null;
+        this.rootElement = null;
+        
+        this.setState(state);
     }
 
     get htmlElement() {
@@ -17,7 +18,15 @@ export class Component {
         this.state = newState;
 
         let newRender = this.render();
-        this.rootElement.replaceWith(newRender);
-        this.rootElement = newRender;  
+        if(this.rootElement != null) {
+            this.rootElement.replaceWith(newRender);
+        }
+        this.rootElement = newRender;
+        
+        this.setListeners();
+    }
+
+    setListeners() {
+
     }
 }
