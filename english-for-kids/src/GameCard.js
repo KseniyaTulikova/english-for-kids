@@ -54,7 +54,7 @@ export class GameCard extends Component {
     }
 
     play() {
-        if(!this.isRotated && !this.isPlayMode){
+        if(!this.isRotated){
             let audio = new Audio(this.state.cardAudio);
             audio.play();
         } 

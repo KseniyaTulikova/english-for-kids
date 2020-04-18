@@ -3,16 +3,53 @@ import { GameCard } from './GameCard.js';
 
 export class Game extends Component {
     constructor(game) {
-        let gameCards = (game.gameCards != null) ? game.gameCards.map(card => new GameCard(card)) : [];
+        let gameCards = game.gameCards.map(card => new GameCard(card));
         super({
             gameTheme: game.themeValue, 
             gameSrc: game.src,
             gameCards: gameCards,
+            correctSound: game.correctSound,
+            incorrectSound: game.incorrectSound,
+            winSound: game.winSound,
             isSelected: false,
         });
 
         this.isPlayMode = false;
+        this.cardsForGame = null;
         this.setSelected = this.setSelected.bind(this);
+    }
+
+    start() {
+        this.cardsForGame = [...this.state.gameCards];
+        this.shuffle(this.cardsForGame);
+        this.cardsForGame[0].play();
+    }
+
+    repeatSound() {
+        this.cardsForGame[0].play();
+    }
+
+    setAnswer(answerCard) {
+        if(answerCard == this.cardsForGame[0]) {
+            this.playSound(this.state.correctSound);
+            this.cardsForGame.shift();
+
+            if(this.cardsForGame.length == 0) {
+                this.playSound(this.state.winSound);
+            } else {
+                setTimeout(() => this.cardsForGame[0].play(), 1000);
+            }
+        } else {
+            this.playSound(this.state.incorrectSound);
+        }
+    }
+
+    playSound (src) {
+        new Audio(src).play();
+    }
+
+    shuffle(array) {
+        array.sort(() => Math.random() - 0.5);
     }
 
     render() {
@@ -48,18 +85,13 @@ export class Game extends Component {
         if (this.state.isSelected) {
             this.rootElement.addEventListener('click', (event) => {
                 let card = event.target.closest('.card');
-                if (card != null) {
+                if (card != null && !this.isPlayMode) {
                     this.state.gameCards[card.dataset.cardIndex].play();
+                } else if(card != null && this.cardsForGame != null) {//incorrect condition
+                    this.setAnswer(this.state.gameCards[card.dataset.cardIndex]);
                 }
             });
-
-            this.rootElement.addEventListener('click', (event) => {
-                let card = event.target.closest('.card');
-                if (card != null) {
-                    this.state.gameCards[card.dataset.cardIndex].play();
-                }
-            });
-        }
+        } 
     }
 
     toggleMode() {

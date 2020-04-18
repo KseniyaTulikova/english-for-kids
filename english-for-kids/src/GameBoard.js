@@ -1,6 +1,5 @@
 import { Game } from './Game.js';
 import { Component } from './Component.js';
-import { GameHeader } from './GameHeader.js';
 
 
 export class GameBoard extends Component {
@@ -10,10 +9,17 @@ export class GameBoard extends Component {
             games: games,
             selectedGame: null,  
         });
+
+        this.isPlayMode = false;
     }
 
     toggleMode() {
-        this.state.games.forEach(game => game.toggleMode()); 
+        this.isPlayMode = !this.isPlayMode;
+        this.state.games.forEach(game => game.toggleMode());
+
+        if(this.state.selectedGame != null) {
+            this.rootElement.querySelector('.btns').classList.toggle('none');
+        }
     }
 
     showHomePage() {
@@ -37,14 +43,18 @@ export class GameBoard extends Component {
 
         if(this.state.selectedGame != null) {
             gameBoard.append(this.state.selectedGame.htmlElement);
+
+            let startGameBtnDisplayState = (this.isPlayMode) ? '' : 'none';
+            gameBoard.insertAdjacentHTML('beforeend', `<div class="btns ${startGameBtnDisplayState}">
+                    <button class="btn">Start game</button>
+                </div>`);
         } else {
             gameBoard.classList.add('container'); 
             this.state.games.forEach((game, index) => {
                 game.htmlElement.dataset.gameIndex = index;
                 gameBoard.append(game.htmlElement);
-            });
+            });   
         }
-         
 
         return gameBoard;
     }
@@ -61,6 +71,17 @@ export class GameBoard extends Component {
                     this.setState({ ...this.state, selectedGame: selectedGame });
                 }
             });    
+        } else if(this.state.selectedGame != null) {
+            this.rootElement.querySelector('.btns').addEventListener('click', (event) => {
+                if(!event.target.classList.contains('repeat')) {
+                    event.target.classList.add('repeat');
+                    this.state.selectedGame.start();
+                }else{
+                    this.state.selectedGame.repeatSound();
+                }
+                
+            });
+            
         }
     }
 }

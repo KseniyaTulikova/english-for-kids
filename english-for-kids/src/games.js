@@ -2,6 +2,9 @@ export const GAMES = [
     {
         'themeValue': 'Action (set A)',
         'src' : '../img/dance.jpg',
+        'incorrectSound': '../audio/error.mp3',
+        'correctSound': '../audio/correct.mp3',
+        'winSound': '../audio/success.mp3',
         'gameCards' : [
             {
                 'wordEn': 'cry',
