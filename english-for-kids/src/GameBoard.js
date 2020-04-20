@@ -11,6 +11,7 @@ export class GameBoard extends Component {
         });
 
         this.isPlayMode = false;
+        this.state.games.forEach((game) => game.setGameBoard(this));
     }
 
     toggleMode() {

@@ -417,6 +417,7 @@ body {
   font-family: Roboto;
   text-align: left;
   color: #ffffff;
+  text-decoration: none;
 }
 
 .header-item.active {
@@ -468,6 +469,32 @@ body {
   width: 100%;
   margin: 0 auto;
 
-  text-align: center;
   color: #212529;
+}
+
+.gameInfo {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 76%;
+  height: 165px;
+}
+
+.raiting {
+  -webkit-animation: showRaiting 1s 1;
+          animation: showRaiting 1s 1;
+}
+@keyframes showRaiting {
+  0% {
+    opacity: 0;
+  }
+  30% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
 }

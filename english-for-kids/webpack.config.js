@@ -3,7 +3,34 @@ module.exports = {
     mode: 'development',
     entry: './src/index.js',
     output: {
-            filename: 'bundle.js',
-            path: path.resolve(__dirname, 'dist')
-        }
-} 
+        filename: 'bundle.js',
+        path: path.resolve(__dirname, 'dist')
+    },
+    module: {
+        rules: [
+            {
+                test: /\.(jpg|png|svg)$/,
+                loader: 'file-loader',
+                options: {
+                    name: 'images/[name].[ext]'
+                },
+            },
+        ],
+    },
+}
+
+// module.exports = function () {
+//     return {
+//         module: {
+//             rules: [
+//                 {
+//                     test: /\.(jpg|png|svg)$/,
+//                     loader: 'file-loader',
+//                     options: {
+//                         name: 'images/[name].[ext]'
+//                     },
+//                 },
+//             ],
+//         },
+//     };
+// };

@@ -15,7 +15,7 @@ export class GameHeader extends Component {
 
         gameHeader.innerHTML = `
         <div class="burger-container">
-            <img src="../img/menu.svg" class="burger-menu" alt="Burger menu"> 
+            <img src="./img/menu.svg" class="burger-menu" alt="Burger menu"> 
         </div>
         <section class="game-menu">
             <nav class="menu green">

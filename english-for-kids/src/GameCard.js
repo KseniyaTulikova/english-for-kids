@@ -42,7 +42,7 @@ export class GameCard extends Component {
 
         this.rootElement.querySelector('.card').addEventListener('mouseleave',() => {
             if(this.isRotated){
-                this.isRotated = !this.isRotated;
+                this.isRotated = false;
                 this.rootElement.querySelector('.card').classList.remove('translate');
             } 
         });
@@ -60,11 +60,11 @@ export class GameCard extends Component {
         } 
     }
 
-    makeActive() {
+    makeInactive() {
         this.rootElement.classList.add('card-out-game');
     }
 
-    makeInActive() {
+    makeActive() {
         this.rootElement.classList.remove('card-out-game');
     }
     
