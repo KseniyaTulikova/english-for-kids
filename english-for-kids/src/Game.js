@@ -32,16 +32,28 @@ export class Game extends Component {
     setAnswer(answerCard) {
         if(answerCard == this.cardsForGame[0]) {
             this.playSound(this.state.correctSound);
+            this.makeActive();
+            
             this.cardsForGame.shift();
+
 
             if(this.cardsForGame.length == 0) {
                 this.playSound(this.state.winSound);
+                this.makeInActive();//переделать метод нужен ререндер
             } else {
                 setTimeout(() => this.cardsForGame[0].play(), 1000);
             }
         } else {
             this.playSound(this.state.incorrectSound);
         }
+    }
+
+    makeActive() {
+        this.cardsForGame[0].makeActive();
+    }
+
+    makeInActive() {
+        this.state.gameCards.forEach(game => game.makeInActive());
     }
 
     playSound (src) {
@@ -56,6 +68,7 @@ export class Game extends Component {
         let element;
         if(this.state.isSelected) {
             element = document.createElement('div'); 
+            element.insertAdjacentHTML('afterbegin', `<h2 class="selected-game-theme">${this.state.gameTheme}</h2>`);
             element.classList.add('container');       
             this.state.gameCards.forEach((card, index)=> {
                 card.setDataAttribute('cardIndex', index);

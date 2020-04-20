@@ -396,7 +396,7 @@ body {
   width: 40%;
   height: 100vh;
 
-  transform: translateX(-100%);
+  transform: translateX(-200%);
 
   transition: 0.5s;
 }
@@ -457,4 +457,17 @@ body {
   background-position: 50%;
   background-size: 32px 32px,cover;
   border-radius: 50%;
+}
+
+.card-out-game {
+  opacity: 0.5;
+}
+
+.selected-game-theme {
+  display: block;
+  width: 100%;
+  margin: 0 auto;
+
+  text-align: center;
+  color: #212529;
 }

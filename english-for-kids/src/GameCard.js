@@ -59,6 +59,14 @@ export class GameCard extends Component {
             audio.play();
         } 
     }
+
+    makeActive() {
+        this.rootElement.classList.add('card-out-game');
+    }
+
+    makeInActive() {
+        this.rootElement.classList.remove('card-out-game');
+    }
     
     toggleMode() {
         this.isPlayMode = !this.isPlayMode;
