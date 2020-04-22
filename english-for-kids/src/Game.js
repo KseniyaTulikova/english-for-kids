@@ -1,6 +1,7 @@
 import { Component } from './Component.js';
 import { GameCard } from './GameCard.js';
 import { GameStatistic } from './GameStatistic.js';
+import { Play } from './Play.js';
 
 export class Game extends Component {
     constructor(game) {
@@ -14,16 +15,14 @@ export class Game extends Component {
             incorrectSound: game.incorrectSound,
             winSound: game.winSound,
             failureSound: game.failureSound,
-            isSelected: false,
+            currentRender: 'gameCover',
             gameStatistic: gameStatistic,
         });
 
         this.isPlayMode = false;
-        this.cardsForGame = null;
         this.setSelected = this.setSelected.bind(this);
+        this.start = this.start.bind(this);
         this.gameBoard = null;
-        this.quantityOfCorrect = 0;
-        this.quantityOfIncorrect = 0;
     }
 
     setGameBoard(gameBoard) {
@@ -31,86 +30,86 @@ export class Game extends Component {
     }
 
     start() {
-        this.cardsForGame = [...this.state.gameCards];
-        this.shuffle(this.cardsForGame);
-        this.cardsForGame[0].play();
+        this.state.gameStatistic.setVisibility(true);
+        this.play = new Play(this, this.state.gameStatistic);
+    }
+
+    getCards() {
+       return this.state.gameCards;
     }
 
     repeatSound() {
-        this.cardsForGame[0].play();
+        this.play.repeatSound(); 
     }
 
-    exitGame() {
-        this.setSelected(false);
-        this.quantityOfCorrect = this.quantityOfCorrect = 0;
+    finishGame() {
         this.state.gameCards.forEach((card) => card.makeActive());
-        this.gameBoard.showHomePage();
+        this.setState({...this.state, currentRender: 'gameResult'});
+        this.state.gameStatistic.setVisibility(false);
+        
+        setTimeout(() => this.gameBoard.showHomePage(), 3000);
     }
 
-    // to do refactoring
-    setAnswer(answerCard) {
-        if(answerCard == this.cardsForGame[0]) {
-            this.playSound(this.state.correctSound);
-            answerCard.makeInactive();
-            this.quantityOfCorrect++;
-            
-            this.cardsForGame.shift();
-            this.state.gameStatistic.updateStatistics(this.quantityOfCorrect, this.quantityOfIncorrect);
-    
-
-
-            if(this.cardsForGame.length == 0 && this.quantityOfIncorrect > 0) {
-                this.playSound(this.state.failureSound);
-                this.exitGame();
-
-            } else if(this.cardsForGame.length == 0) {
-                this.playSound(this.state.winSound);
-                this.exitGame();
-            } else {
-                setTimeout(() => this.cardsForGame[0].play(), 1000);
-            }
-
-        } else {
-            this.playSound(this.state.incorrectSound);
-            this.quantityOfIncorrect++;
-        }
-        this.state.gameStatistic.updateStatistics(this.quantityOfCorrect, this.quantityOfIncorrect);
+    playCorrectSound() {
+        new Audio(this.state.correctSound).play();
     }
 
-    playSound (src) {
-        new Audio(src).play();
+    playIncorrectSound() {
+        new Audio(this.state.incorrectSound).play();
     }
 
-    shuffle(array) {
-        array.sort(() => Math.random() - 0.5);
+    playWinSound() {
+        new Audio(this.state.winSound).play();
+    }
+
+    playFailureSound() {
+        new Audio(this.state.failureSound).play();
     }
 
     render() {
         let element, gameInfo;
-        if(this.state.isSelected) {
-            element = document.createElement('div'); 
-            element.classList.add('container');  
+        switch(this.state.currentRender) {
+            case 'cards': {
+                element = document.createElement('div');
+                element.classList.add('container');
 
-            gameInfo = document.createElement('div');
-            gameInfo.classList.add('gameInfo');
-            gameInfo.insertAdjacentElement('afterbegin', this.state.gameStatistic.htmlElement);
-            gameInfo.insertAdjacentHTML('afterbegin', `<h2 class="selected-game-theme">${this.state.gameTheme}</h2>`);   
-             
-            element.append(gameInfo);
+                gameInfo = document.createElement('div');
+                gameInfo.classList.add('gameInfo');
+                gameInfo.insertAdjacentElement('afterbegin', this.state.gameStatistic.htmlElement);
+                gameInfo.insertAdjacentHTML('afterbegin', `<h2 class="selected-game-theme">${this.state.gameTheme}</h2>`);
 
-            this.state.gameCards.forEach((card, index)=> {
-                card.setDataAttribute('cardIndex', index);
-                element.append(card.htmlElement)
-            });
+                element.append(gameInfo);
 
+                this.state.gameCards.forEach((card, index) => {
+                    card.setDataAttribute('cardIndex', index);
+                    element.append(card.htmlElement)
+                });
 
-        } else {
-            element =  document.createElement('a');
-            let elementClasses = this.isPlayMode ? ['game-theme'] : ['game-theme', 'green'];
-            element.classList.add(...elementClasses);
-            element.innerHTML = `<img src = "${this.state.gameSrc}" alt = "${this.state.gameTheme}">${this.state.gameTheme}`;
+                break;
+            }
+            case 'gameResult': {
+
+                let errors = this.state.gameStatistic.getQuantityOfIncorrect();
+                let correctAnswers = this.state.gameStatistic.getQuantityOfCorrect()
+
+                let text = (errors > 0) ? `Sorry, you  have ${errors} errors!` : 'My congratulations, you WIN the game!' ;
+                element = document.createElement('div');
+                element.classList.add('gameResult');
+                element.innerHTML = `<h2>${text}</h2>
+                <h2>Errors: ${errors}</h2>
+                <h2>Correct answers:  ${correctAnswers}</h2>`;
+                break;
+            }
+            case 'gameCover': {
+                element = document.createElement('a');
+                let elementClasses = this.isPlayMode ? ['game-theme'] : ['game-theme', 'green'];
+                element.classList.add(...elementClasses);
+                element.innerHTML = `<img src = "${this.state.gameSrc}" alt = "${this.state.gameTheme}">${this.state.gameTheme}`;
+                break;
+            }
+            default:
         }
-        
+
         return element;
     }
 
@@ -119,17 +118,18 @@ export class Game extends Component {
     }
 
     setSelected(value) {
-        this.setState({...this.state, isSelected: value});
+        // let currentRender = value ? 'cards' : 'gameCover';
+        this.setState({...this.state, currentRender: value});
     }
 
     setListeners() {
-        if (this.state.isSelected) {
+        if (this.state.currentRender == 'cards') {
             this.rootElement.addEventListener('click', (event) => {
                 let card = event.target.closest('.card');
                 if (card != null && !this.isPlayMode) {
                     this.state.gameCards[card.dataset.cardIndex].play();
-                } else if(card != null && this.cardsForGame != null) {//incorrect condition
-                    this.setAnswer(this.state.gameCards[card.dataset.cardIndex]);
+                } else if(card != null && this.play != null) {
+                    this.play.setAnswer(this.state.gameCards[card.dataset.cardIndex]);
                 }
             });
         } 

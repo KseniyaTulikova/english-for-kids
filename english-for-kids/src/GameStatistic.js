@@ -7,6 +7,7 @@ export class GameStatistic extends Component {
             srcCorrect: gameRaitingInfo.correctStar,
             quantityOfCorrect: 0,
             quantityOfIncorrect: 0,
+            visible: false,
         });
     }
 
@@ -18,9 +19,25 @@ export class GameStatistic extends Component {
         });
     }
 
+    getQuantityOfCorrect () {
+        return this.state.quantityOfCorrect;
+    }
+
+    getQuantityOfIncorrect () {
+        return this.state.quantityOfIncorrect;
+    }
+
+    setVisibility(value) {
+        this.setState({
+            ...this.state, 
+            visible: value
+        });
+    }
+
     render() {
         let element = document.createElement('div');
-        element.classList.add('raiting');
+        let elementClasses = this.state.visible ? ['raiting'] : ['raiting', 'none'];
+        element.classList.add(...elementClasses);
 
         element.innerHTML = `<img class="correct answer" src="${this.state.srcCorrect}" alt="Correct Answer Star"/> <span>${this.state.quantityOfCorrect}</span>
         <img class="incorrect answer" src="${this.state.srcIncorrect}" alt="Correct Answer Star"/> <span>${this.state.quantityOfIncorrect}</span>`;

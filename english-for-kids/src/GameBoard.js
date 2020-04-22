@@ -24,13 +24,13 @@ export class GameBoard extends Component {
     }
 
     showHomePage() {
-        this.state.selectedGame.setSelected(false);
+        this.state.selectedGame.setSelected('gameCover');
         this.setState({...this.state, selectedGame: null});
     }
 
     selectGame(gameTheme) {
         let selectedGame = this.state.games.find(game => game.getGameTheme() == gameTheme);
-        selectedGame.setSelected(true);
+        selectedGame.setSelected('cards');
 
         this.setState({ ...this.state, selectedGame: selectedGame });
     }
@@ -67,7 +67,7 @@ export class GameBoard extends Component {
                 if (game != null) {
                     let gameIndex = game.dataset.gameIndex;
                     let selectedGame = this.state.games[gameIndex];
-                    selectedGame.setSelected(true);
+                    selectedGame.setSelected('cards'); //to do
 
                     this.setState({ ...this.state, selectedGame: selectedGame });
                 }
