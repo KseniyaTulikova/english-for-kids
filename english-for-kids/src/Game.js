@@ -127,6 +127,7 @@ export class Game extends Component {
             this.rootElement.addEventListener('click', (event) => {
                 let card = event.target.closest('.card');
                 if (card != null && !this.isPlayMode) {
+                    this.state.gameCards[card.dataset.cardIndex].setInfoClick('training');
                     this.state.gameCards[card.dataset.cardIndex].play();
                 } else if(card != null && this.play != null) {
                     this.play.setAnswer(this.state.gameCards[card.dataset.cardIndex]);
@@ -134,6 +135,7 @@ export class Game extends Component {
             });
         } 
     }
+    
 
     toggleMode() {
         this.isPlayMode = !this.isPlayMode;

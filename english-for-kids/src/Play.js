@@ -23,6 +23,7 @@ export class Play {
     setAnswer(answerCard) {
         if(answerCard == this.cardsForGame[0]) {
 
+            this.cardsForGame[0].setInfoClick('passed');
             this.game.playCorrectSound();
             answerCard.makeInactive();
             this.quantityOfCorrect++;
@@ -43,7 +44,8 @@ export class Play {
             }
 
         } else{
-            if(!answerCard.rootElement.classList.contains('card-out-game')) { //incorrect condition
+            if(!answerCard.htmlElement.classList.contains('card-out-game')) { //incorrect condition
+                this.cardsForGame[0].setInfoClick('failed');
                 this.game.playIncorrectSound();
                 this.quantityOfIncorrect++;
             }

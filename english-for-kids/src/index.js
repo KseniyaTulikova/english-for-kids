@@ -10,3 +10,4 @@ window.onload = () => {
 
  document.body.append(gameHeader.htmlElement, gameBoard.htmlElement);
 }
+

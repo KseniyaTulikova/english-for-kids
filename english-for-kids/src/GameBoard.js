@@ -1,5 +1,6 @@
 import { Game } from './Game.js';
 import { Component } from './Component.js';
+import { StudyStatistic } from './StudyStatistic.js';
 
 
 export class GameBoard extends Component {
@@ -7,13 +8,30 @@ export class GameBoard extends Component {
         let games = listOfGames.map(game => new Game(game));
         super({
             games: games,
-            selectedGame: null,  
+            selectedGame: null,
+            showStatistic: null,  
         });
+
+        listOfGames.forEach((game) => this.setTrainingInfo(game));
 
         this.isPlayMode = false;
         this.state.games.forEach((game) => game.setGameBoard(this));
+        
     }
 
+    setTrainingInfo(game) {
+        let gameTheme = game.themeValue;
+        game.gameCards.forEach((gameCard) => {
+            sessionStorage.setItem(`${gameCard.wordEn}`, JSON.stringify({
+                'gameTheme': gameTheme,
+                'wordRu': gameCard.wordRu,
+                'training': 0,
+                'failed': 0,
+                'passed': 0
+            }));
+        });
+
+    }
     toggleMode() {
         this.isPlayMode = !this.isPlayMode;
         this.state.games.forEach(game => game.toggleMode());
@@ -24,11 +42,24 @@ export class GameBoard extends Component {
     }
 
     showHomePage() {
-        this.state.selectedGame.setSelected('gameCover');
-        this.setState({...this.state, selectedGame: null});
+        if(this.state.selectedGame != null) {
+            this.state.selectedGame.setSelected('gameCover');
+        }
+            this.setState({...this.state, selectedGame: null, showStatistic: null});    
+    }
+
+    showStatisticPage(value) {
+        if(this.state.selectedGame != null) {
+            this.state.selectedGame.setSelected('gameCover');
+        }
+        this.setState({...this.state, selectedGame: null, showStatistic: value});
     }
 
     selectGame(gameTheme) {
+        if(this.state.selectedGame != null) {
+            this.state.selectedGame.setSelected('gameCover');
+        }
+        
         let selectedGame = this.state.games.find(game => game.getGameTheme() == gameTheme);
         selectedGame.setSelected('cards');
 
@@ -49,6 +80,8 @@ export class GameBoard extends Component {
             gameBoard.insertAdjacentHTML('beforeend', `<div class="btns ${startGameBtnDisplayState}">
                     <button class="btn">Start game</button>
                 </div>`);
+        }else if(this.state.showStatistic !=null){
+            gameBoard.append(this.state.showStatistic.htmlElement);
         } else {
             gameBoard.classList.add('container'); 
             this.state.games.forEach((game, index) => {

@@ -1,4 +1,5 @@
 import { Component } from "./Component.js";
+import { StudyStatistic } from "./StudyStatistic.js";
 
 export class GameHeader extends Component {
     constructor(gameBoard){
@@ -10,7 +11,7 @@ export class GameHeader extends Component {
         gameHeader.classList.add('header-container');
 
         let gameLinks = this.state.gameBoard.getGameThemes()
-            .map(theme => `<a class="header-item" data-game-theme= "${theme}" href="#/cards">${theme}</a>`)
+            .map(theme => `<a class="header-item" data-game-theme= "${theme}" href="#/">${theme}</a>`)
             .join('');
 
         gameHeader.innerHTML = `
@@ -22,6 +23,7 @@ export class GameHeader extends Component {
                 <ul class="menu-list ">
                     <a class="header-item main-page" href="#/">Main Page</a>
                     ${gameLinks}
+                    <a class="header-item study-statistic" href="#/">Statistics</a>
                 </ul>
             </nav>
         </section>
@@ -52,7 +54,11 @@ export class GameHeader extends Component {
                 this.toggleNavigationButton();
                 this.toggleNavigationMenu();
                 this.state.gameBoard.showHomePage();
-            } else {
+            }else if(event.target.classList.contains('study-statistic')) {
+                this.toggleNavigationButton();
+                this.toggleNavigationMenu();
+                this.state.gameBoard.showStatisticPage(new StudyStatistic());
+            }else {
                 this.toggleNavigationButton();
                 this.toggleNavigationMenu();
 

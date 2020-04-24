@@ -15,7 +15,6 @@ body {
   max-width: 1440px;
   margin: auto;
   padding: 20px 15px;
-  /* padding-top: 55px; */
 }
 
 .game-theme {
@@ -497,4 +496,49 @@ body {
   100% {
     opacity: 1;
   }
+}
+
+.study-statistic {
+  display: flex;
+  flex-direction: column;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.row,
+.header-row {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 100%;
+  height: 40px;
+  margin-bottom: 5px;
+
+  border: 2px solid red;
+}
+
+.cell {
+  width: 12%;
+}
+
+.cell > h4 {
+  margin: 0;
+
+  text-align: justify;
+  white-space: normal;
+}
+
+.sort {
+  display: flex;
+  flex-direction: column;
+}
+
+.sorter-img {
+  width: 10px;
+  height: 10px;
+}
+.header-row > .cell {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
 }

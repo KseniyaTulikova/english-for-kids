@@ -49,6 +49,25 @@ export class GameCard extends Component {
         
     }
 
+    setInfoClick(stateOfClick){
+        let currentInfo = JSON.parse(sessionStorage.getItem(this.state.wordEn));
+
+        switch (stateOfClick) {
+            case 'training': 
+                currentInfo.training = currentInfo.training + 1;
+                break;
+            case 'failed': 
+                currentInfo.failed = currentInfo.failed + 1;
+                break;
+            case 'passed':
+                currentInfo.passed = currentInfo.passed + 1;
+                break;
+            default:
+        }
+        
+        sessionStorage.setItem(this.state.wordEn, JSON.stringify(currentInfo));
+    }
+
     setDataAttribute(name, value) {
         this.rootElement.querySelector('.card').dataset[name] = value;
     }
