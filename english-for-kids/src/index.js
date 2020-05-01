@@ -1,13 +1,11 @@
-import { GameBoard } from './GameBoard.js';
-import { GAMES } from './games.js';
-import { GameHeader } from './GameHeader.js';
+import GameBoard from './GameBoard';
+import { GAMES } from './games';
+import GameHeader from './GameHeader';
 
 
 window.onload = () => {
+  const gameBoard = new GameBoard(GAMES);
+  const gameHeader = new GameHeader(gameBoard);
 
- let gameBoard = new GameBoard(GAMES);
- let gameHeader = new GameHeader(gameBoard);
-
- document.body.append(gameHeader.htmlElement, gameBoard.htmlElement);
-}
-
+  document.body.append(gameHeader.htmlElement, gameBoard.htmlElement);
+};

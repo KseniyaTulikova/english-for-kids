@@ -1,3 +1,5 @@
+@import "https://fonts.googleapis.com/css?family=Russo+One";
+
 body {
   margin: 0;
   overflow-x: hidden;
@@ -107,7 +109,6 @@ body {
   box-shadow: -1px 5px 15px 0 rgba(0,0,0,0.5);
 }
 
-/*Этот стиль добавляется тогда,когда мы кликаем на кнопку перевернуть  */
 .translate {
   -webkit-transform: rotateY(180deg);
           transform: rotateY(180deg);
@@ -463,13 +464,67 @@ body {
   opacity: 0.5;
 }
 
-.selected-game-theme {
-  display: block;
-  width: 100%;
+h2.funny-title {
   margin: 0 auto;
 
-  color: #212529;
+  font-weight: 900;
+  font-size: 35px;
+  font-family: "Russo One",sans-serif;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 8px;
+
+  border-top: 5px solid #e0dbde;
+  border-bottom: 5px solid #e0dbde;
 }
+
+@-webkit-keyframes move-background {
+  0% {
+    background-position: -300px 0;
+  }
+  100% {
+    background-position: 300px -300px;
+  }
+}
+@-moz-keyframes move-background {
+  0% {
+    background-position: -300px 0;
+  }
+  100% {
+    background-position: 300px -300px;
+  }
+}
+
+@keyframes move-background {
+  0% {
+    background-position: -300px 0;
+  }
+  100% {
+    background-position: 300px -300px;
+  }
+}
+
+.selected-game-theme {
+  color: transparent;
+
+  background: url(../img/square.svg) no-repeat #daafc9;
+  background-size: cover;
+  -webkit-background-clip: text;
+     -moz-background-clip: text;
+          background-clip: text;
+
+  -webkit-animation: move-background 15s infinite linear alternate;
+     -moz-animation: move-background 15s infinite linear alternate;
+          animation: move-background 15s infinite linear alternate;
+  -webkit-animation-play-state: running;
+     -moz-animation-play-state: running;
+          animation-play-state: running;
+
+  -webkit-text-fill-color: transparent;
+     -moz-text-fill-color: transparent;
+  ;
+}
+
 
 .gameInfo {
   display: flex;
@@ -498,11 +553,22 @@ body {
   }
 }
 
+.gameResult {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 auto;
+  margin-top: 12%;
+}
+
 .study-statistic {
   display: flex;
   flex-direction: column;
+  box-sizing: border-box;
+  width: 100%;
   max-width: 1000px;
   margin: 0 auto;
+  padding: 5% 10%;
 }
 
 .row,
@@ -514,7 +580,14 @@ body {
   height: 40px;
   margin-bottom: 5px;
 
-  border: 2px solid red;
+  border: 5px solid;
+  border-image-source: linear-gradient(40deg,#00bf82,#0099ae);
+  border-image-slice: 1;
+}
+
+.header-row > .cell {
+  align-items: center;
+  height: inherit;
 }
 
 .cell {
@@ -524,21 +597,58 @@ body {
 .cell > h4 {
   margin: 0;
 
-  text-align: justify;
-  white-space: normal;
+  font-size: 1em;
+  text-align: center;
+
+  overflow-wrap: break-word;
 }
 
 .sort {
   display: flex;
   flex-direction: column;
+  align-self: center;
 }
 
 .sorter-img {
   width: 10px;
   height: 10px;
 }
+
 .header-row > .cell {
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
+}
+
+@media (min-width: 320px) and (max-width: 820px) {
+  .row,
+  .header-row {
+    height: 68px;
+  }
+
+  .header-row > .cell > h4 {
+    margin: 2px;
+  }
+}
+
+@media (min-width: 450px) and (max-width: 620px) {
+  .cell > h4 {
+    font-size: 0.7em;
+  }
+
+  .sorter-img {
+    width: 5px;
+    height: 5px;
+  }
+}
+
+@media (min-width: 320px) and (max-width: 449px) {
+  .cell > h4 {
+    font-size: 0.5em;
+  }
+
+  .sorter-img {
+    width: 5px;
+    height: 5px;
+  }
 }

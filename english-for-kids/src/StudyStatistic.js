@@ -1,24 +1,24 @@
-import { Component } from "./Component.js";
-import { StatisticRow } from "./StatisticRow.js";
+import Component from './Component';
+import StatisticRow from './StatisticRow';
 
-export class StudyStatistic extends Component {
-    constructor() {
-        super({words: null});
-        this.setState({words: this.getStatisticFromStorage()});
-    }
+export default class StudyStatistic extends Component {
+  constructor() {
+    super({ words: null });
+    this.setState({ words: StudyStatistic.getStatisticFromStorage() });
+  }
 
 
-    getStatisticFromStorage() {
-        let keys = Object.keys(sessionStorage);
+  static getStatisticFromStorage() {
+    const KEYS = Object.keys(sessionStorage);
 
-        return keys.map(key => new StatisticRow(JSON.parse(sessionStorage[key]), key)); 
-    }
+    return KEYS.map((key) => new StatisticRow(JSON.parse(sessionStorage[key]), key));
+  }
 
-    render() {
-        let element = document.createElement('div');
-        element.classList.add('study-statistic');
+  render() {
+    const ELEMENT = document.createElement('div');
+    ELEMENT.classList.add('study-statistic');
 
-        element.innerHTML = `<div class="header-row">
+    ELEMENT.innerHTML = `<div class="header-row">
             <div class="cell">
                 <h4>Word</h4>
                 <div class="sort"> 
@@ -58,40 +58,42 @@ export class StudyStatistic extends Component {
             </div>
         </div>`;
 
-        if(this.state.words != null) {
-            this.state.words.forEach(word => element.append(word.htmlElement));
-        } 
-
-        return element;
+    if (this.state.words != null) {
+      this.state.words.forEach((word) => ELEMENT.append(word.htmlElement));
     }
 
-    compare(fieldName, a, b) {
-        let first = a[fieldName].toString(), second = b[fieldName].toString();
+    return ELEMENT;
+  }
 
-        return first.localeCompare(second);
+  static compare(fieldName, a, b) {
+    const first = a[fieldName].toString(); const
+      second = b[fieldName].toString();
+
+    return first.localeCompare(second);
+  }
+
+  sortStatistic(property, flag) {
+    const WORDS = [...this.state.words];
+    switch (flag) {
+      case 'asc': {
+        WORDS.sort((a, b) => StudyStatistic.compare(property, a, b));
+        break;
+      }
+      case 'dsc': {
+        WORDS.sort((a, b) => -StudyStatistic.compare(property, a, b));
+        break;
+      }
+      default:
     }
 
-    sortStatistic(property, flag) {
-        let words = [...this.state.words];
-        switch(flag){  
-            case 'asc': {     
-                words.sort((a, b) => this.compare(property, a, b));
-                break;
-            }
-            case 'dsc': {
-                words.sort((a, b) => -this.compare(property, a, b));
-                break;
-            }
-            default:
-        }
+    this.setState({ words: WORDS });
+  }
 
-        this.setState({words: words});
-    }
-    setListeners() {
-        this.rootElement.addEventListener('click', (event)=>{
-            let sortProperty = event.target.dataset.sortProperty;
-            let sortFlag = event.target.dataset.sortFlag;
-            this.sortStatistic(sortProperty, sortFlag);
-        });
-    }
+  setListeners() {
+    this.rootElement.addEventListener('click', (event) => {
+      const { sortProperty } = event.target.dataset;
+      const { sortFlag } = event.target.dataset;
+      this.sortStatistic(sortProperty, sortFlag);
+    });
+  }
 }

@@ -1,98 +1,97 @@
-import { Component } from './Component.js';
+import Component from './Component';
 
-export class GameCard extends Component {
-    constructor(gameCardInfo) {
-        super({
-            wordEn: gameCardInfo.wordEn,
-            wordRu: gameCardInfo.wordRu,
-            imgUrl: gameCardInfo.imgUrl,
-            cardAudio: gameCardInfo.audio
-        });
+export default class GameCard extends Component {
+  constructor(gameCardInfo) {
+    super({
+      wordEn: gameCardInfo.wordEn,
+      wordRu: gameCardInfo.wordRu,
+      imgUrl: gameCardInfo.imgUrl,
+      cardAudio: gameCardInfo.audio,
+    });
 
-        this.isRotated = false;
-        this.isPlayMode = false;
-    }
+    this.isRotated = false;
+    this.isPlayMode = false;
+  }
 
-    render() {
-        let cardContainer = document.createElement('div');
-        cardContainer.classList.add('card-container');
-        
-        let none = this.isPlayMode ? 'none' : '';
-        let cardCover = this.isPlayMode ? 'card-cover' : '';
+  render() {
+    const CARD_CONTAINER = document.createElement('div');
+    CARD_CONTAINER.classList.add('card-container');
 
-        cardContainer.innerHTML = `
-            <div class="card ${cardCover}">
+    const NONE = this.isPlayMode ? 'none' : '';
+    const CARD_COVER = this.isPlayMode ? 'card-cover' : '';
+
+    CARD_CONTAINER.innerHTML = `
+            <div class="card ${CARD_COVER}">
                 <div class="card-front"  style="background-image: url(${this.state.imgUrl});">
-                    <div class="card-word en ${none}">${this.state.wordEn}</div>
+                    <div class="card-word en ${NONE}">${this.state.wordEn}</div>
                 </div>
                 <div class="card-back" style="background-image: url(${this.state.imgUrl});">
-                    <div class="card-word ru ${none}">${this.state.wordRu}</div>
+                    <div class="card-word ru ${NONE}">${this.state.wordRu}</div>
                 </div>
-                <div class="rotate ${none}"></div>
-            </div>`;      
+                <div class="rotate ${NONE}"></div>
+            </div>`;
 
-        return cardContainer;
+    return CARD_CONTAINER;
+  }
+
+  setListeners() {
+    this.rootElement.querySelector('.rotate').addEventListener('click', () => {
+      this.isRotated = true;
+      this.rootElement.querySelector('.card').classList.add('translate');
+    });
+
+    this.rootElement.querySelector('.card').addEventListener('mouseleave', () => {
+      if (this.isRotated) {
+        this.isRotated = false;
+        this.rootElement.querySelector('.card').classList.remove('translate');
+      }
+    });
+  }
+
+  setInfoClick(stateOfClick) {
+    const CURRENT_INFO = JSON.parse(sessionStorage.getItem(this.state.wordEn));
+
+    switch (stateOfClick) {
+      case 'training':
+        CURRENT_INFO.training += 1;
+        break;
+      case 'failed':
+        CURRENT_INFO.failed += 1;
+        break;
+      case 'passed':
+        CURRENT_INFO.passed += 1;
+        break;
+      default:
     }
 
-    setListeners() {
-        this.rootElement.querySelector('.rotate').addEventListener('click',() => {
-            this.isRotated = true;
-            this.rootElement.querySelector('.card').classList.add('translate');
-        });
+    sessionStorage.setItem(this.state.wordEn, JSON.stringify(CURRENT_INFO));
+  }
 
-        this.rootElement.querySelector('.card').addEventListener('mouseleave',() => {
-            if(this.isRotated){
-                this.isRotated = false;
-                this.rootElement.querySelector('.card').classList.remove('translate');
-            } 
-        });
-        
+  setDataAttribute(name, value) {
+    this.rootElement.querySelector('.card').dataset[name] = value;
+  }
+
+  play() {
+    if (!this.isRotated) {
+      const audio = new Audio(this.state.cardAudio);
+      audio.play();
     }
+  }
 
-    setInfoClick(stateOfClick){
-        let currentInfo = JSON.parse(sessionStorage.getItem(this.state.wordEn));
+  makeInactive() {
+    this.rootElement.classList.add('card-out-game');
+  }
 
-        switch (stateOfClick) {
-            case 'training': 
-                currentInfo.training = currentInfo.training + 1;
-                break;
-            case 'failed': 
-                currentInfo.failed = currentInfo.failed + 1;
-                break;
-            case 'passed':
-                currentInfo.passed = currentInfo.passed + 1;
-                break;
-            default:
-        }
-        
-        sessionStorage.setItem(this.state.wordEn, JSON.stringify(currentInfo));
-    }
+  makeActive() {
+    this.rootElement.classList.remove('card-out-game');
+  }
 
-    setDataAttribute(name, value) {
-        this.rootElement.querySelector('.card').dataset[name] = value;
-    }
+  toggleMode() {
+    this.isPlayMode = !this.isPlayMode;
+    this.rootElement.querySelectorAll('.card-word, .rotate').forEach((element) => {
+      element.classList.toggle('none');
+    });
 
-    play() {
-        if(!this.isRotated){
-            let audio = new Audio(this.state.cardAudio);
-            audio.play();
-        } 
-    }
-
-    makeInactive() {
-        this.rootElement.classList.add('card-out-game');
-    }
-
-    makeActive() {
-        this.rootElement.classList.remove('card-out-game');
-    }
-    
-    toggleMode() {
-        this.isPlayMode = !this.isPlayMode;
-        this.rootElement.querySelectorAll('.card-word, .rotate').forEach(element => {
-            element.classList.toggle('none');
-        });
-
-        this.rootElement.querySelector('.card').classList.toggle('card-cover');
-    }
+    this.rootElement.querySelector('.card').classList.toggle('card-cover');
+  }
 }
