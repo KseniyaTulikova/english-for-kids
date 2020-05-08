@@ -23,7 +23,7 @@ export default class Footer extends Component{
                 </div>
                 <div class="author-container">
                     <a href=${this.state.authorGitHubUrl} class="author-info">
-                        <img src=${this.state.gitIcon_src} alt="Github icon" class="git-icon">
+                        <img src=${this.state.gitIcon_src} alt="Github icon" class="git-icon"/>
                         <h2>${this.state.authorName}</h2>   
                     </a>
                 </div>
