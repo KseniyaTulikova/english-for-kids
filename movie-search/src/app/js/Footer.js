@@ -17,7 +17,7 @@ export default class Footer extends Component{
         element.innerHTML = `
             <div class="footer">
                 <div class="rs-container">
-                    <a href=${this.state.rsShoolUrl}>
+                    <a href=${this.state.rsSchoolUrl}>
                         <h2>${this.state.rsSchoolSeason}</h2>
                     </a>
                 </div>

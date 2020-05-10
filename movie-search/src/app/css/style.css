@@ -2,6 +2,8 @@ body {
   max-width: 1650px;
   margin: 0;
   padding: 0;
+
+  background-color: black;
 }
 
 /* Code for Header */
@@ -11,9 +13,6 @@ body {
   justify-content: center;
   width: 100%;
   height: 100px;
-
-  background: -webkit-linear-gradient(to right, #243b55, #141e30);
-  background:         linear-gradient(to right, #243b55, #141e30);
 }
 .header-title {
   align-self: center;
@@ -31,6 +30,7 @@ form {
   flex-direction: row;
   width: 60%;
   margin: 0 auto;
+  margin-top: 20px;
 }
 input {
   width: 100%;
@@ -41,10 +41,104 @@ input {
   color: #9e9c9c;
 
   background: #f9f0da;
-  border: 2px solid rgb(202, 72, 72);
+  border: 2px solid crimson;
   border-radius: 5px;
   outline: none;
 }
+
+.loader-container {
+  position: relative;
+  left: -12%;
+
+  display: inline-block;
+  width: 55px;
+  height: 42px;
+
+  border-collapse: collapse;
+  font-size: 10px;
+  vertical-align: top;
+  text-align: center;
+}
+
+.none {
+  display: none;
+}
+
+.loader-1 {
+  position: absolute;
+  position: relative;
+  top: 50%;
+
+  width: 25px;
+  height: 25px;
+  margin: -12px auto 0;
+
+  background: #ffffff;
+  background:    -moz-linear-gradient(left, crimson 10%, rgba(255, 255, 255, 0) 50%);
+  background: -webkit-linear-gradient(left, crimson 10%, rgba(255, 255, 255, 0) 50%);
+  background:      -o-linear-gradient(left, crimson 10%, rgba(255, 255, 255, 0) 50%);
+  background:     -ms-linear-gradient(left, crimson 10%, rgba(255, 255, 255, 0) 50%);
+  background:         linear-gradient(to right, crimson 10%, rgba(255, 255, 255, 0) 50%);
+  border-radius: 50%;
+  -webkit-transform: translateZ(0);
+      -ms-transform: translateZ(0);
+          transform: translateZ(0);
+
+  -webkit-animation: loader-1 1.5s infinite linear;
+          animation: loader-1 1.5s infinite linear;
+}
+
+.loader-1:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  width: 10px;
+  height: 10px;
+
+  background: transparent;
+  border-radius: 100% 0 0 0;
+}
+
+.loader-1:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  width: 15px;
+  height: 15px;
+  margin: auto;
+
+  background: #4a00ffc2;
+  border-radius: 50%;
+}
+
+@-webkit-keyframes loader-1 {
+  0% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+}
+
+@keyframes loader-1 {
+  0% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+}
+
 button {
   top: 0;
   right: 0;
@@ -52,7 +146,7 @@ button {
   width: 20%;
   height: 42px;
 
-  background: rgb(202, 72, 72);
+  background: crimson;
   border: none;
   border-radius: 5%;
   cursor: pointer;
@@ -66,43 +160,55 @@ button > h3 {
   letter-spacing: 0.05em;
 }
 
-/* .swiper-container {
-  width: 60%;
-  height: 300px;
 
-  margin: 0 auto;
-} */
+
+
+
+
+button:hover {
+  opacity: 0.5;
+}
 
 .swiper-container {
-  width: 60%;
+  width: 88%;
+  margin-bottom: 35px;
   padding-top: 50px;
   padding-bottom: 50px;
-
-  border: 2px solid rebeccapurple;
 }
 .swiper-slide {
-  width: 300px;
-  height: 300px;
+  width: 250px;
+  height: 500px;
 
   background-position: center;
   background-size: cover;
-  border: 2px solid red;
 }
+
+.swiper-pagination-bullet {
+  background: #e91e63;
+}
+
+.movie {
+  height: 100%;
+
+  text-decoration: none;
+}
+
 /* Code for Footer */
 .footer {
   flex-direction: row;
   justify-content: space-evenly;
 }
 .footer h2 {
+  font-size: 1em;
   color: #ffffff;
 }
-
-.footer a {
-  text-decoration: none;
-
-  cursor: pointer;
+.rs-container h2 {
+  margin-left: 21%;
 }
 
+footer a {
+  text-decoration: none;
+}
 .git-icon {
   width: 15%;
   height: 15%;
@@ -112,7 +218,13 @@ button > h3 {
 .author-container,
 .rs-container {
   width: 18%;
-  height: 60%;
+  height: 66%;
+
+  text-decoration: none;
+
+  background: crimson;
+  border-radius: 50%;
+  cursor: pointer;
 }
 
 .author-info {
@@ -121,5 +233,39 @@ button > h3 {
 }
 
 
+@media (min-width: 320px) and (max-width: 800px) {
+  form {
+    flex-direction: column;
+  }
 
+  button {
+    width: 100%;
+    margin-top: 10px;
+  }
 
+  button > h3 {
+    padding: 0;
+  }
+
+  footer h2 {
+    font-size: 1em;
+  }
+}
+
+@media (min-width: 320px) and (max-width: 560px) {
+  .rs-container {
+    display: none;
+  }
+
+  .author-container {
+    border-radius: 1px;
+  }
+
+  .author-container h2 {
+    text-align: center;
+  }
+
+  .author-container img {
+    display: none;
+  }
+}
